@@ -3,17 +3,19 @@ const url = require('url');
 const http = require('https');
 var access_token;
 
-var requestObject = {
-    protocol: 'https:',
-    hostname: mktoHelper.munchkin_id + ".mktorest.com",
-    path: "/rest/v1/leads.json",
-    headers: {},
-    query: {
+
+function reqObject() {
+    this.protocol = 'https:',
+    this.hostname = mktoHelper.munchkin_id + ".mktorest.com",
+    this.path = "/rest/v1/leads.json",
+    this.headers = {},
+    this.query = {
         fields: "firstName,lastName,email,updatedAt,id"
     }
 };
 
 function upsertLead(data, callback) {
+    var requestObject = new reqObject();
     var postData = JSON.stringify({   
         action: "createOrUpdate",
         lookupField: "email",
@@ -39,6 +41,9 @@ function upsertLead(data, callback) {
 }
 
 function getLeadBy(data, filterType, filterValue, callback) {
+    var requestObject = new reqObject();
+    
+    console.dir(requestObject);
     requestObject.query.filterType = filterType;
     requestObject.query.filterValues = filterValue;
     requestObject.headers['Authorization'] = 'Bearer ' + data.access_token;
@@ -51,7 +56,7 @@ function getLeadBy(data, filterType, filterValue, callback) {
 
     var parsedUrl = url.parse(url.format(requestObject));
     requestObject.path += parsedUrl.path;
-
+    console.dir(requestObject.path);
     var req = http.request(requestObject, function(response) {
         var str = '';
         response.on('data', function (chunk) {
@@ -62,30 +67,33 @@ function getLeadBy(data, filterType, filterValue, callback) {
         });
     })
     req.end();
-}
+} 
 
-var mkto = {
-    getLeadById: function(id, callback) {
-        mktoHelper.access_token(function(data) {
-            getLeadBy(data, 'id', id, callback);
-        });
-    },    
-    getLeadsByCookie: function(cookie, callback) {
-        mktoHelper.access_token(function(data) {
-            getLeadBy(data, 'cookie', cookie, callback);
-        });
-    },
-    getLeadsByEmail: function(email, callback) {
-        mktoHelper.access_token(function(data) {
-            getLeadBy(data, 'email', email, callback);
-        });
-    },
-    upsertLead: function(body, callback){
-        mktoHelper.access_token(function(data) {
-            data.body = body;
-            upsertLead(data, callback);
-        });
+    var mkto = {
+        getLeadById: function(id, callback) {
+            mktoHelper.access_token(function(data) {
+                getLeadBy(data, 'id', id, callback);
+            });
+        },    
+        getLeadsByCookie: function(cookie, callback) {
+            mktoHelper.access_token(function(data) {
+                getLeadBy(data, 'cookie', cookie, callback);
+            });
+        },
+        getLeadsByEmail: function(email, callback) {
+            mktoHelper.access_token(function(data) {
+                getLeadBy(data, 'email', email, callback);
+            });
+        },
+        upsertLead: function(body, callback){
+            mktoHelper.access_token(function(data) {
+                data.body = body;
+                upsertLead(data, callback);
+            });
+        }
     }
-}
 
-module.exports = mkto;
+
+module.exports = function() {
+    return mkto;
+}

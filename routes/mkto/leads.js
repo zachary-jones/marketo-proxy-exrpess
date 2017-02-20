@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var mktoLeads = require('../../repositories/mkto/leads');
+var mktoLeads = require('../../repositories/mkto/leads')();
+
 
 router.get('/getLeadsByCookie/:cookie', function(req, res, next) {
   mktoLeads.getLeadsByCookie(req.params['cookie'], function (data) {
