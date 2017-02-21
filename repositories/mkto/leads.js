@@ -10,7 +10,7 @@ function reqObject() {
     this.path = "/rest/v1/leads.json",
     this.headers = {},
     this.query = {
-        fields: "firstName,lastName,email,updatedAt,id"
+        fields: "firstName,lastName,email,updatedAt,id,phone"
     }
 };
 
