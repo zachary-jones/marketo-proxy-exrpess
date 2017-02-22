@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var mktoLeads = require('./routes/mkto/leads');
+var mktoTests = require('./routes/mkto/tests/mkto_tests');
 
 var app = express();
 console.log('Express server listening on port ' + config.port + ', mode: ' + config.mode);
@@ -32,6 +33,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/mkto/leads/', mktoLeads);
+app.use('/mkto/tests/', mktoTests);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

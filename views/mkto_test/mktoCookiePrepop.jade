@@ -1,0 +1,53 @@
+extends ../layout
+ 
+block content
+    div
+        h3 Native HTML Form
+    form(name="add-estimation", method="post")
+        div.input
+            span.label First Name
+            input(type="text", name="firstName")
+        div.input
+            span.label Last Name
+            input(type="text", name="lastName")
+        div.input
+            span.label Email
+            input(type="text", name="Email")
+        div.input
+            span.label Phone
+            input(type="text", name="Phone")                                    
+
+    div
+        h3 Marketo Form
+        script(src='//app-ab16.marketo.com/js/forms2/js/forms2.min.js')
+        form#mktoForm_1181
+        script.
+            MktoForms2.loadForm("//app-ab16.marketo.com", "946-FDM-410", 1181);
+
+    script(type='text/javascript' src='/javascripts/mkto_lib.js')
+    script(type="text/javascript").
+        //inject trk_cookie
+        var createCookie = function(name, value, days) {
+            var expires;
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toGMTString();
+            }
+            else {
+                expires = "";
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+        createCookie('_mkto_trk', 'id:058-NIT-467&token:_mch-floridatechonline.com-1484068598556-54192');
+
+    script(type="text/javascript").
+        mktoLeads().getLeadByCookie(function(data){
+            mktoLeads().prepopForm(data);
+        });
+    script(type="text/javascript").
+        MktoForms2.loadForm("//app-sjqe.marketo.com", "718-GIV-198", 621, function(form) {
+            mktoLeads().getLeadByCookie(function(data){
+                mktoLeads().prepopForm(data);
+            });
+        });
