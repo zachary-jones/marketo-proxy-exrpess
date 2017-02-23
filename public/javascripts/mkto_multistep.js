@@ -13,18 +13,6 @@
 
     try {
         if (multistepify) {
-            if (isUmbracoForm) {
-                //this switches the progress bar function as the primary sites have a completely distinct style from that of the umbraco sites
-                updateProgressBarVar = updateProgressBarBat;
-                //because mkto injects child filtered select options and custom style tags, it is necessary to remove the added style tags on the newly injected html elements
-                //this will not work if filters are setup with grandchild+ filtering from mkto forms
-                var selects = document.querySelectorAll('.mktoForm select');
-                for (var i = 0; i < selects.length; i++) {
-                    selects[i].addEventListener("change", updateSelects);
-                    //TODO: determine a means to add the css puedo after and before to mkto injected elements for the arrow
-                }                
-            }
-
             //begin multistep logic
             MktoForms2.whenReady(multistepifyMarketoForm);     
         } else {
@@ -70,6 +58,18 @@
     }
 
     function multistepifyMarketoForm() {
+        if (isUmbracoForm) {
+            //this switches the progress bar function as the primary sites have a completely distinct style from that of the umbraco sites
+            updateProgressBarVar = updateProgressBarBat;
+            //because mkto injects child filtered select options and custom style tags, it is necessary to remove the added style tags on the newly injected html elements
+            //this will not work if filters are setup with grandchild+ filtering from mkto forms
+            var selects = document.querySelectorAll('.mktoForm select');
+            for (var i = 0; i < selects.length; i++) {
+                selects[i].addEventListener("change", updateSelects);
+                //TODO: determine a means to add the css puedo after and before to mkto injected elements for the arrow
+            }                
+        }
+
         //get all marketo forms
         var allMarketoForms = document.querySelectorAll('form.mktoForm:not(.multistepified)');
         //loop through each marketo form
