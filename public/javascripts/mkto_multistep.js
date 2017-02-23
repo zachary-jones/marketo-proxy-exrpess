@@ -1,15 +1,15 @@
-(function() {
+(function(multistepify, dynamicTCPA, isUmbracoForm, includePreviousButton, tcpaToken) {
     var prev = 'Previous';
     var next = 'Next';
     var invalidClass = 'mktoInvalid';
     var requiredClass = 'mktoRequired';
     var phoneId = 'Phone';
-    var multistepify = '${multistepForm}';
-    var dynamicTCPA = '${injectTCPA}';
-    var isUmbracoForm = '${isUmbracoForm}';
-    var includePreviousButton = '${previousButton}';
+    var multistepify = multistepify;
+    var dynamicTCPA = dynamicTCPA;
+    var isUmbracoForm = isUmbracoForm;
+    var includePreviousButton = includePreviousButton;
     var updateProgressBarVar = updateProgressBar;
-
+    var tcpaToken = tcpaToken;
     try {
         if (multistepify) {
             //begin multistep logic
@@ -442,7 +442,7 @@
 
     function addTCPA(form) {
         if (form) { 
-            var tcpa = '${tcpaToken}';
+            var tcpa = tcpaToken;
             var phoneElement = form.querySelectorAll('#' + phoneId)[0];
             if (phoneElement) {
             phoneElement.addEventListener("focus", function () {
@@ -529,4 +529,4 @@
             currentForm.querySelectorAll('.stepIndicatorText')[0].textContent = "Step " + step + " of " + maxSteps;
         }
     }
-})();
+})(mktoTokens.multistepify, mktoTokens.dynamicTCPA, mktoTokens.isUmbracoForm, mktoTokens.includePreviousButton, mktoTokens.tcpaToken);
