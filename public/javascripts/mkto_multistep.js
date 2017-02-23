@@ -10,8 +10,21 @@
     var includePreviousButton = includePreviousButton;
     var updateProgressBarVar = updateProgressBar;
     var tcpaToken = tcpaToken;
+
     try {
         if (multistepify) {
+            if (isUmbracoForm) {
+                //this switches the progress bar function as the primary sites have a completely distinct style from that of the umbraco sites
+                updateProgressBarVar = updateProgressBarBat;
+                //because mkto injects child filtered select options and custom style tags, it is necessary to remove the added style tags on the newly injected html elements
+                //this will not work if filters are setup with grandchild+ filtering from mkto forms
+                var selects = document.querySelectorAll('.mktoForm select');
+                for (var i = 0; i < selects.length; i++) {
+                    selects[i].addEventListener("change", updateSelects);
+                    //TODO: determine a means to add the css puedo after and before to mkto injected elements for the arrow
+                }                
+            }
+
             //begin multistep logic
             MktoForms2.whenReady(multistepifyMarketoForm);     
         } else {
@@ -27,19 +40,7 @@
                 }
             });      
         }
-        if (isUmbracoForm) {
-            MktoForms2.whenReady(function() {
-                //this switches the progress bar function as the primary sites have a completely distinct style from that of the umbraco sites
-                updateProgressBarVar = updateProgressBarBat;
-                //because mkto injects child filtered select options and custom style tags, it is necessary to remove the added style tags on the newly injected html elements
-                //this will not work if filters are setup with grandchild+ filtering from mkto forms
-                var selects = document.querySelectorAll('.mktoForm select');
-                for (var i = 0; i < selects.length; i++) {
-                    selects[i].addEventListener("change", updateSelects);
-                    //TODO: determine a means to add the css puedo after and before to mkto injected elements for the arrow
-                }                
-            })
-        }
+
         //at times for reasons unknown, mkto when injecting identical forms in different places on a document will duplicate the form
         //and other forms at the bottom of the document are created... this function seeks to remove these duplicate forms
         ready(removeDuplicateForms);    
