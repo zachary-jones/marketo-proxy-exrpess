@@ -29,14 +29,14 @@
         }
         if (isUmbracoForm) {
             MktoForms2.whenReady(function() {
-                //this switched the progress bar function as the primary sites have a completely distinct style from that of the umbraco sites
+                //this switches the progress bar function as the primary sites have a completely distinct style from that of the umbraco sites
                 updateProgressBarVar = updateProgressBarBat;
                 //because mkto injects child filtered select options and custom style tags, it is necessary to remove the added style tags on the newly injected html elements
                 //this will not work if filters are setup with grandchild+ filtering from mkto forms
                 var selects = document.querySelectorAll('.mktoForm select');
                 for (var i = 0; i < selects.length; i++) {
                     selects[i].addEventListener("change", updateSelects);
-                    //TODO: determine a means to add the css puedo after and before to mltp injected elements
+                    //TODO: determine a means to add the css puedo after and before to mkto injected elements for the arrow
                 }                
             })
         }
@@ -316,31 +316,31 @@
 
     // http://jaketrent.com/post/addremove-classes-raw-javascript/
     function hasClass(el, className) {
-    if (el.classList) {
-        return el.classList.contains(className);
-    }
-    else {
-        return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
-    }
+        if (el.classList) {
+            return el.classList.contains(className);
+        }
+        else {
+            return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+        }
     }
 
     function addClass(el, className) {
-    if (el.classList) {
-        el.classList.add(className);
-    }
-    else if (!hasClass(el, className)) {
-        el.className += " " + className;
-    }
+        if (el.classList) {
+            el.classList.add(className);
+        }
+        else if (!hasClass(el, className)) {
+            el.className += " " + className;
+        }
     }
 
     function removeClass(el, className) {
-    if (el.classList) {
-        el.classList.remove(className);
-    }
-    else if (hasClass(el, className)) {
-        var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
-        el.className=el.className.replace(reg, ' ');
-    }
+        if (el.classList) {
+            el.classList.remove(className);
+        }
+        else if (hasClass(el, className)) {
+            var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+            el.className=el.className.replace(reg, ' ');
+        }
     }
 
     function toggleClass(element, className){
@@ -441,20 +441,20 @@
     }
 
     function addTCPA(form) {
-    if (form) { 
-        var tcpa = '${tcpaToken}';
-        var phoneElement = form.querySelectorAll('#' + phoneId)[0];
-        if (phoneElement) {
-        phoneElement.addEventListener("focus", function () {
-            if (!form.querySelectorAll('#tcpanotice')[0]) {
-                var tcpaNotice = document.createElement('div');
-                tcpaNotice.setAttribute("id", "tcpanotice");
-                tcpaNotice.innerHTML = tcpa;
-                phoneElement.parentNode.appendChild(tcpaNotice);
+        if (form) { 
+            var tcpa = '${tcpaToken}';
+            var phoneElement = form.querySelectorAll('#' + phoneId)[0];
+            if (phoneElement) {
+            phoneElement.addEventListener("focus", function () {
+                if (!form.querySelectorAll('#tcpanotice')[0]) {
+                    var tcpaNotice = document.createElement('div');
+                    tcpaNotice.setAttribute("id", "tcpanotice");
+                    tcpaNotice.innerHTML = tcpa;
+                    phoneElement.parentNode.appendChild(tcpaNotice);
+                }
+            });
             }
-        });
         }
-    }
     }
 
     function updateProgressBar(fieldstep, step) {
