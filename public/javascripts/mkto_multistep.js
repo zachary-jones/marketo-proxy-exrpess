@@ -15,7 +15,7 @@
         if (multistepify) {
             //begin multistep logic
             MktoForms2.whenReady(multistepifyMarketoForm);     
-        } else {
+        } else { 
             //primary site css documents have mkto forms hidden by default as they are hidden from view on the primary sites
             //we need to show them once loaded
             MktoForms2.whenReady(function() {
